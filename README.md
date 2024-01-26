@@ -2,8 +2,6 @@
 
 This project implements a simple HTTP server in Node.js that responds to GET requests on the `/data` endpoint. The server accepts query parameters (`n` for file name and `m` for line number) and returns the content of files accordingly.
 
-## Getting Started
-
 ### Prerequisites
 
 - Docker installed on your machine.
@@ -11,28 +9,22 @@ This project implements a simple HTTP server in Node.js that responds to GET req
 ### Installation
 
 1. Clone the repository:
-
    ```
    git clone https://github.com/Rimpi246/headout-assignment.git
    ```
-
 2. Open git bash or cmd
    ```
    cd node-http-server
    ```
 3. Build the Docker image:
-
    ```
    docker build -t <my-http-server> .
    ```
-
-4.Run the Docker container:
-
-```
-docker run -p 8080:8080 <my-http-server-container> <my-http-server>
-```
-
-5.The server will be accessible at `http://localhost:8080`.
+4. Run the Docker container:
+   ```
+   docker run -p 8080:8080 <my-http-server-container> <my-http-server>
+   ```
+5. The server will be accessible at `http://localhost:8080`.
 
 ### API Endpoint
 
