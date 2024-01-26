@@ -43,13 +43,14 @@ function readLineFromFile(filePath, m, cb) {
   rl.on("line", (line) => {
     console.log(`Line ${lineNumber}: ${line}`);
     if (lineNumber === parseInt(m)) {
-      content = line;
+      //   content = line;
       rl.close();
+      cb(line);
     }
     lineNumber++;
   });
   rl.on("close", () => {
-    cb(content !== "" ? content : null);
+    cb(null);
   });
 
   rl.on("error", (err) => {
