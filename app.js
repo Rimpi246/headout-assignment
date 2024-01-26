@@ -1,5 +1,6 @@
 const express = require("express");
 const fs = require("fs");
+const readline = require("readline");
 const path = require("path");
 const app = express();
 
@@ -13,6 +14,9 @@ app.get("/data", (req, res) => {
   if (m) {
     //  return the content of file /tmp/data/n.txt at line number m
     readLineFromFile(filePath, m, (content) => {
+      if (content === null) {
+        return res.status(404).send("Line not found");
+      }
       res.send(content);
     });
   } else {
@@ -28,24 +32,27 @@ app.listen("8080", () => {
 });
 
 function readLineFromFile(filePath, m, cb) {
-  const stream = fs.createReadStream(filePath, { encoding: "utf-8" });
-  let content = "";
-  let lineNumber = 1;
+  const rl = readline.createInterface({
+    input: fs.createReadStream(filePath),
+    crlfDelay: Infinity,
+  });
 
-  stream.on("data", (chunk) => {
-    for (let line of AllLines) {
-      if (lineNumber == m) {
-        content += line;
-        stream.close();
-        break;
-      }
-      lineNumber++;
+  let lineNumber = 1;
+  let content = "";
+
+  rl.on("line", (line) => {
+    console.log(`Line ${lineNumber}: ${line}`);
+    if (lineNumber === parseInt(m)) {
+      content = line;
+      rl.close();
     }
+    lineNumber++;
   });
-  stream.on("end", () => {
-    cb(content);
+  rl.on("close", () => {
+    cb(content !== "" ? content : null);
   });
-  stream.on("error", (err) => {
+
+  rl.on("error", (err) => {
     console.error(`Error: ${err.message}`);
     cb("Error");
   });
